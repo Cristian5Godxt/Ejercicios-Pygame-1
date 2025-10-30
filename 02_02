@@ -1,0 +1,51 @@
+import pygame
+import sys
+
+pygame.init()
+
+# Configuración de la ventana
+ANCHO, ALTO = 800, 600
+ventana = pygame.display.set_mode((ANCHO, ALTO))
+pygame.display.set_caption("Círculos Concéntricos")
+
+# Definimos el centro de la ventana
+CENTRO_X = ANCHO // 2
+CENTRO_Y = ALTO // 2
+
+# Lista de radios para los círculos
+RADIOS = [100, 80, 60, 40, 20]  # Los definimos de mayor a menor para que los más pequeños queden encima
+
+# Lista de colores para cada círculo (del más grande al más pequeño)
+COLORES = [
+    (255, 0, 0),    # Rojo
+    (0, 255, 0),    # Verde
+    (0, 0, 255),    # Azul
+    (255, 255, 0),  # Amarillo
+    (255, 0, 255)   # Magenta
+]
+
+while True:
+    for evento in pygame.event.get():
+        if evento.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        if evento.type == pygame.KEYDOWN:
+            if evento.key == pygame.K_ESCAPE:
+                pygame.quit()
+                sys.exit()
+    
+    # Llenamos el fondo de blanco
+    ventana.fill((255, 255, 255))
+    
+    # Dibujamos los círculos
+    for i in range(len(RADIOS)):
+        pygame.draw.circle(
+            ventana,           # Superficie donde dibujar
+            COLORES[i],       # Color del círculo
+            (CENTRO_X, CENTRO_Y),  # Centro del círculo
+            RADIOS[i],        # Radio del círculo
+            2                 # Grosor del borde (2 píxeles)
+        )
+    
+    pygame.display.flip()
+    pygame.time.delay(50)

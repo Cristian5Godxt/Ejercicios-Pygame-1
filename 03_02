@@ -1,0 +1,61 @@
+import pygame
+import sys
+import math
+
+pygame.init()
+
+# Configuración de la ventana
+ANCHO, ALTO = 800, 600
+ventana = pygame.display.set_mode((ANCHO, ALTO))
+pygame.display.set_caption("Trayectoria Circular")
+
+# Colores
+AZUL = (0, 0, 255)
+BLANCO = (255, 255, 255)
+
+# Configuración del rectángulo
+RECT_ANCHO = 50
+RECT_ALTO = 50
+
+# Configuración de la trayectoria circular
+CENTRO_X = ANCHO // 2  # 400
+CENTRO_Y = ALTO // 2   # 300
+RADIO = 150  # Radio de la trayectoria circular
+VELOCIDAD_ANGULAR = 0.02  # Velocidad de rotación
+angulo = 0  # Ángulo inicial
+
+while True:
+    for evento in pygame.event.get():
+        if evento.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        if evento.type == pygame.KEYDOWN:
+            if evento.key == pygame.K_ESCAPE:
+                pygame.quit()
+                sys.exit()
+    
+    # Calcular la posición del rectángulo usando funciones trigonométricas
+    rect_x = CENTRO_X + RADIO * math.cos(angulo) - RECT_ANCHO // 2
+    rect_y = CENTRO_Y + RADIO * math.sin(angulo) - RECT_ALTO // 2
+    
+    # Actualizar el ángulo para el siguiente frame
+    angulo += VELOCIDAD_ANGULAR
+    
+    # Si el ángulo supera 2π (360 grados), reiniciarlo
+    if angulo >= 2 * math.pi:
+        angulo = 0
+    
+    # Dibujar
+    ventana.fill(BLANCO)
+    
+    # Dibujar un punto en el centro (opcional, para referencia)
+    pygame.draw.circle(ventana, (255, 0, 0), (CENTRO_X, CENTRO_Y), 5)
+    
+    # Dibujar la trayectoria circular (opcional, para referencia)
+    pygame.draw.circle(ventana, (200, 200, 200), (CENTRO_X, CENTRO_Y), RADIO, 1)
+    
+    # Dibujar el rectángulo
+    pygame.draw.rect(ventana, AZUL, (rect_x, rect_y, RECT_ANCHO, RECT_ALTO))
+    
+    pygame.display.flip()
+    pygame.time.delay(16)  # Aproximadamente 60 FPS

@@ -1,0 +1,28 @@
+import pygame
+import sys
+
+pygame.init()
+
+ancho, alto = 1000, 800
+ventana = pygame.display.set_mode((ancho, alto))
+pygame.display.set_caption("Mi primer programa gráfico")
+
+color_fondo = (0, 255, 0)
+
+fuente = pygame.font.Font(None, 48)
+texto = fuente.render("Mi primer programa gráfico", True, (0, 0, 0))
+texto_rect = texto.get_rect(center=(ancho // 2, alto // 2))
+
+while True:
+    for evento in pygame.event.get():
+        if evento.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        if evento.type == pygame.KEYDOWN:
+            if evento.key == pygame.K_ESCAPE:
+                pygame.quit()
+                sys.exit()
+
+    ventana.fill(color_fondo)
+    ventana.blit(texto, texto_rect)
+    pygame.display.flip()

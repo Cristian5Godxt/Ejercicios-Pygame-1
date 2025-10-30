@@ -1,0 +1,38 @@
+import pygame
+import sys
+
+pygame.init()
+
+ancho, alto = 1000, 800
+ventana = pygame.display.set_mode((ancho, alto))
+pygame.display.set_caption("Cambio de Color")
+
+colores = [
+    (255, 255, 255),  # Blanco
+    (0, 0, 255),      # Azul
+    (255, 0, 0),      # Rojo
+    (0, 255, 0),      # Verde
+    (255, 255, 0),    # Amarillo
+    (255, 0, 255),    # Magenta
+    (0, 255, 255),    # Cian
+    (128, 0, 128)     # Púrpura
+]
+indice_color = 0
+color_actual = colores[indice_color]
+
+while True:
+    for evento in pygame.event.get():
+        if evento.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        if evento.type == pygame.KEYDOWN:
+            if evento.key == pygame.K_ESCAPE:
+                pygame.quit()
+                sys.exit()
+            if evento.key == pygame.K_c:
+                indice_color = (indice_color + 1) % len(colores)
+                color_actual = colores[indice_color]
+
+    ventana.fill(color_actual)
+    pygame.display.flip()
+    pygame.time.delay(50)

@@ -1,0 +1,41 @@
+import pygame
+import sys
+
+pygame.init()
+
+ancho, alto = 1000, 800
+ventana = pygame.display.set_mode((ancho, alto))
+pygame.display.set_caption("Mi primer programa gráfico")
+
+color_fondo = (0, 255, 0)
+
+fuente = pygame.font.Font(None, 48)
+texto = fuente.render("Mi primer programa gráfico", True, (0, 0, 0))
+texto_rect = texto.get_rect(center=(ancho // 2, alto // 2))
+
+contador_frames = 0
+
+while True:
+    for evento in pygame.event.get():
+        if evento.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        if evento.type == pygame.KEYDOWN:
+            if evento.key == pygame.K_ESCAPE:
+                pygame.quit()
+                sys.exit()
+
+    ventana.fill(color_fondo)
+    ventana.blit(texto, texto_rect)
+    
+    contador_frames += 1
+    texto_frame = fuente.render(f"Frame: {contador_frames}", True, (0, 0, 0))
+    texto_frame_rect = texto_frame.get_rect(topleft=(10, 10))
+    ventana.blit(texto_frame, texto_frame_rect)
+    
+    if contador_frames >= 300:
+        pygame.quit()
+        sys.exit()
+    
+    pygame.display.flip()
+    pygame.time.delay(100)  # Pausa de 100 milisegundos (0.1 segundos) entre cada frame

@@ -1,0 +1,85 @@
+import pygame
+import sys
+
+pygame.init()
+
+# Configuración de la ventana
+ANCHO, ALTO = 800, 600
+ventana = pygame.display.set_mode((ANCHO, ALTO))
+pygame.display.set_caption("Casa Interactiva")
+
+# Colores
+BLANCO = (255, 255, 255)
+ROJO = (255, 0, 0)
+AZUL = (0, 0, 255)
+VERDE = (0, 255, 0)
+AMARILLO = (255, 255, 0)
+NEGRO = (0, 0, 0)
+
+# Dimensiones de la casa
+CASA_X = 300  # Posición X de la casa
+CASA_Y = 200  # Posición Y de la casa
+CASA_ANCHO = 200  # Ancho del cuerpo de la casa
+CASA_ALTO = 150   # Alto del cuerpo de la casa
+
+# Color inicial de la casa
+color_casa = ROJO
+
+def dibujar_casa(color):
+    # Dibujar el cuerpo (rectángulo)
+    pygame.draw.rect(ventana, color, (CASA_X, CASA_Y, CASA_ANCHO, CASA_ALTO))
+    
+    # Dibujar el tejado (triángulo)
+    puntos_tejado = [
+        (CASA_X - 20, CASA_Y),  # Izquierda
+        (CASA_X + CASA_ANCHO + 20, CASA_Y),  # Derecha
+        (CASA_X + CASA_ANCHO//2, CASA_Y - 100)  # Punta
+    ]
+    pygame.draw.polygon(ventana, color, puntos_tejado)
+    
+    # Dibujar ventanas (círculos)
+    radio_ventana = 25
+    # Ventana izquierda
+    pygame.draw.circle(ventana, BLANCO, 
+                      (CASA_X + CASA_ANCHO//4, CASA_Y + CASA_ALTO//3), 
+                      radio_ventana)
+    # Ventana derecha
+    pygame.draw.circle(ventana, BLANCO, 
+                      (CASA_X + (CASA_ANCHO*3)//4, CASA_Y + CASA_ALTO//3), 
+                      radio_ventana)
+    
+    # Dibujar puerta (rectángulo)
+    ancho_puerta = 50
+    alto_puerta = 80
+    x_puerta = CASA_X + (CASA_ANCHO - ancho_puerta)//2
+    y_puerta = CASA_Y + CASA_ALTO - alto_puerta
+    pygame.draw.rect(ventana, NEGRO, (x_puerta, y_puerta, ancho_puerta, alto_puerta))
+
+# Bucle principal
+while True:
+    for evento in pygame.event.get():
+        if evento.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        if evento.type == pygame.KEYDOWN:
+            if evento.key == pygame.K_ESCAPE:
+                pygame.quit()
+                sys.exit()
+            # Cambiar color según la tecla presionada
+            elif evento.key == pygame.K_r:
+                color_casa = ROJO
+            elif evento.key == pygame.K_b:
+                color_casa = AZUL
+            elif evento.key == pygame.K_g:
+                color_casa = VERDE
+            elif evento.key == pygame.K_y:
+                color_casa = AMARILLO
+    
+    # Limpiar pantalla con fondo blanco
+    ventana.fill(BLANCO)
+    
+    # Dibujar la casa
+    dibujar_casa(color_casa)
+    
+    pygame.display.flip()
+    pygame.time.delay(50)

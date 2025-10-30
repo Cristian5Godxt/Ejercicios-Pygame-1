@@ -1,0 +1,65 @@
+import pygame
+import sys
+
+pygame.init()
+
+# Configuración de la ventana
+ANCHO, ALTO = 800, 600
+ventana = pygame.display.set_mode((ANCHO, ALTO))
+pygame.display.set_caption("Rectángulo con Límites")
+
+# Colores
+AZUL = (0, 0, 255)
+ROJO = (255, 0, 0)
+BLANCO = (255, 255, 255)
+
+# Configuración del rectángulo
+RECT_ANCHO = 50
+RECT_ALTO = 50
+rect_x = ANCHO // 2 - RECT_ANCHO // 2  # Centrar el rectángulo
+rect_y = ALTO // 2 - RECT_ALTO // 2
+VELOCIDAD = 5
+
+# Variables de control
+color_actual = AZUL
+
+while True:
+    for evento in pygame.event.get():
+        if evento.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        if evento.type == pygame.KEYDOWN:
+            if evento.key == pygame.K_ESCAPE:
+                pygame.quit()
+                sys.exit()
+    
+    # Obtener las teclas presionadas
+    teclas = pygame.key.get_pressed()
+    
+    # Mover el rectángulo (con límites)
+    if teclas[pygame.K_LEFT]:
+        rect_x = max(0, rect_x - VELOCIDAD)
+    if teclas[pygame.K_RIGHT]:
+        rect_x = min(ANCHO - RECT_ANCHO, rect_x + VELOCIDAD)
+    if teclas[pygame.K_UP]:
+        rect_y = max(0, rect_y - VELOCIDAD)
+    if teclas[pygame.K_DOWN]:
+        rect_y = min(ALTO - RECT_ALTO, rect_y + VELOCIDAD)
+    
+    # Verificar si el rectángulo toca algún borde
+    tocando_borde = (
+        rect_x <= 0 or  # Borde izquierdo
+        rect_x >= ANCHO - RECT_ANCHO or  # Borde derecho
+        rect_y <= 0 or  # Borde superior
+        rect_y >= ALTO - RECT_ALTO  # Borde inferior
+    )
+    
+    # Cambiar color según si toca un borde o no
+    color_actual = ROJO if tocando_borde else AZUL
+    
+    # Dibujar
+    ventana.fill(BLANCO)
+    pygame.draw.rect(ventana, color_actual, (rect_x, rect_y, RECT_ANCHO, RECT_ALTO))
+    
+    pygame.display.flip()
+    pygame.time.delay(16)  # Aproximadamente 60 FPS

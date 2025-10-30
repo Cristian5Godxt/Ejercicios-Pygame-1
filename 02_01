@@ -1,0 +1,41 @@
+import pygame
+import sys
+
+pygame.init()
+
+# Configuración de la ventana
+ANCHO, ALTO = 800, 800  # Ventana cuadrada para el tablero
+TAMANIO_CASILLA = ANCHO // 8  # Dividimos el ancho entre 8 para obtener el tamaño de cada casilla
+ventana = pygame.display.set_mode((ANCHO, ALTO))
+pygame.display.set_caption("Tablero de Ajedrez")
+
+# Colores
+BLANCO = (255, 255, 255)
+NEGRO = (0, 0, 0)
+
+while True:
+    for evento in pygame.event.get():
+        if evento.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        if evento.type == pygame.KEYDOWN:
+            if evento.key == pygame.K_ESCAPE:
+                pygame.quit()
+                sys.exit()
+    
+    # Dibujar el tablero
+    for fila in range(8):
+        for columna in range(8):
+            # Calculamos la posición de cada casilla
+            x = columna * TAMANIO_CASILLA
+            y = fila * TAMANIO_CASILLA
+            
+            # Si la suma de fila y columna es par, la casilla es blanca
+            # Si es impar, la casilla es negra
+            color = BLANCO if (fila + columna) % 2 == 0 else NEGRO
+            
+            # Dibujamos el rectángulo de la casilla
+            pygame.draw.rect(ventana, color, (x, y, TAMANIO_CASILLA, TAMANIO_CASILLA))
+    
+    pygame.display.flip()
+    pygame.time.delay(50)
